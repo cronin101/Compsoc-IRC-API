@@ -7,11 +7,21 @@ class LogLineInterpretter
   end
 
   def speaker(spoken_line)
-    spoken_line.sub(/^\d\d:\d\d < /, '').split('>').first 
+    spoken_line.sub(/^\d\d:\d\d <./, '').split('>').first
   end
 
   def text_spoken(spoken_line)
-    spoken_line.sub(/^\d\d:\d\d <.(\w)*> /, '')
+    text = spoken_line.sub(/^\d\d:\d\d <.(\w)*> /, '')
+    text.sub(/^(\w)*: /,'').chomp
+  end
+
+  def target_name(spoken_line)
+    text = spoken_line.sub(/^\d\d:\d\d <.(\w)*> /, '')
+    if text =~ /^(\w)*: /
+      text.split(':')[0]
+    else
+      nil
+    end
   end
 
   def time_spoken(spoken_line)
@@ -51,23 +61,23 @@ class LogExplorer
   end
 
   def lines_spoken_by(username)
-    @log_lines.find_all { |l| l.chomp =~ speaking_regex(username) }
+    @log_lines.find_all { |l| l =~ speaking_regex(username) }
   end
 
   def first_line_spoken_by(username)
-    @log_lines.each { |l| return l.chomp if (l =~ speaking_regex(username)) }
+    @log_lines.each { |l| return l if (l =~ speaking_regex(username)) }
   end
 
   def last_line_spoken_by(username)
-    @log_lines.reverse.each { |l| return l.chomp if (l =~ speaking_regex(username)) }
+    @log_lines.reverse.each { |l| return l if (l =~ speaking_regex(username)) }
   end
 
   def first_line_spoken
-    @log_lines.each { |l| return l.chomp if (l =~ anyone_speaking_regex) }
+    @log_lines.each { |l| return l if (l =~ anyone_speaking_regex) }
   end
 
   def last_line_spoken
-    @log_lines.reverse.each { |l| return l.chomp if (l =~ anyone_speaking_regex) }
+    @log_lines.reverse.each { |l| return l if (l =~ anyone_speaking_regex) }
     raise "No people spoke in entire log"
   end
 end
