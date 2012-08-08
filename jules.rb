@@ -5,6 +5,7 @@ require 'rack'
 require 'json'
 require 'thin'
 require './log_explorer.rb'
+require 'cgi'
 
 class Jules
   def initialize
@@ -25,7 +26,7 @@ class Jules
             response[:description] = 'last line spoken on #compsoc'
             line = @compsoc_logs.last_line_spoken
           elsif path.split('/')[3] == 'by' && !path.split('/')[4].nil?
-            name = path.split('/')[4]
+            name = CGI.unescape(path.split('/')[4])
             response[:description] = "last line spoken on #compsoc by #{name}"
             line = @compsoc_logs.last_line_spoken_by(name)
           else
@@ -36,7 +37,7 @@ class Jules
             response[:description] = 'first line spoken on #compsoc'
             line = @compsoc_logs.first_line_spoken
           elsif path.split('/')[3] == 'by' && !path.split('/')[4].nil?
-            name = path.split('/')[4]
+            name = CGI.unescape(path.split('/')[4])
             response[:description] = "first line spoken on #compsoc by #{name}"
             line = @compsoc_logs.first_line_spoken_by(name)
           else
@@ -59,16 +60,16 @@ class Jules
           response[:description] = 'all lines spoken on #compsoc'
           lines = @compsoc_logs.spoken_lines
         elsif path.split('/')[3] == 'by' && !path.split('/')[4].nil?
-          name = path.split('/')[4]
+          name = CGI.unescape(path.split('/')[4])
           response[:description] = "all lines spoken on #compsoc by #{name}"
           lines = @compsoc_logs.lines_spoken_by(name)
           if path.split('/')[5] == 'matching' && !path.split('/')[6].nil?
-            filter = path.split('/')[6]
+            filter = CGI.unescape(path.split('/')[6])
             response[:filter] = filter
             lines = lines.find_all { |l| l =~ /#{filter}/ }
           end
         elsif path.split('/')[3] == 'matching' && !path.split('/')[4].nil?
-          filter = path.split('/')[4]
+          filter = CGI.unescape(path.split('/')[4])
           response[:description] = "all lines spoken on #compsoc"
           response[:filter] = filter
           lines = @compsoc_logs.spoken_lines.find_all { |l| l =~ /#{filter}/ }
