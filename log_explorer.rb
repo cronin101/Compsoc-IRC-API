@@ -66,10 +66,12 @@ class LogExplorer
 
   def first_line_spoken_by(username)
     @log_lines.each { |l| return l if (l =~ speaking_regex(username)) }
+    return nil
   end
 
   def last_line_spoken_by(username)
     @log_lines.reverse.each { |l| return l if (l =~ speaking_regex(username)) }
+    return nil
   end
 
   def first_line_spoken

@@ -43,15 +43,41 @@ class Jules
             return [404, {'Content-Type' => 'application/json'}, [{error: 'Page not found'}.to_json,"\n"]]
           end
         end
-        object[:username] = @reader.speaker(line)
-        object[:text] = @reader.text_spoken(line)
-        object[:time] = @reader.time_spoken(line)
-        object[:target_name] = @reader.target_name(line)
-        response[:object] = object
+        if !line.nil?
+          object[:username] = @reader.speaker(line)
+          object[:text] = @reader.text_spoken(line)
+          object[:time] = @reader.time_spoken(line)
+          object[:target_name] = @reader.target_name(line)
+          response[:size] = 1
+          response[:object] = object
+        else
+          response[:size] = 0
+          response[:object] = nil
+        end
       elsif path.split('/')[2] == 'all_lines'
-        response[:description] = 'all lines spoken on #compsoc'
-        puts "Processing #{@compsoc_logs.spoken_lines.size} lines"
-        response[:object] = @compsoc_logs.spoken_lines.map { |line| { username: @reader.speaker(line), text: @reader.text_spoken(line), time: @reader.time_spoken(line), target_name: @reader.target_name(line) } } 
+        if path.split('/')[3].nil?
+          response[:description] = 'all lines spoken on #compsoc'
+          lines = @compsoc_logs.spoken_lines
+        elsif path.split('/')[3] == 'by' && !path.split('/')[4].nil?
+          name = path.split('/')[4]
+          response[:description] = "all lines spoken on #compsoc by #{name}"
+          lines = @compsoc_logs.lines_spoken_by(name)
+          if path.split('/')[5] == 'matching' && !path.split('/')[6].nil?
+            filter = path.split('/')[6]
+            response[:filter] = filter
+            lines = lines.find_all { |l| l =~ /#{filter}/ }
+          end
+        elsif path.split('/')[3] == 'matching' && !path.split('/')[4].nil?
+          filter = path.split('/')[4]
+          response[:description] = "all lines spoken on #compsoc"
+          response[:filter] = filter
+          lines = @compsoc_logs.spoken_lines.find_all { |l| l =~ /#{filter}/ }
+        else
+            return [404, {'Content-Type' => 'application/json'}, [{error: 'Page not found'}.to_json,"\n"]]
+        end
+        puts "Processing #{lines.size} lines"
+        response[:size] = lines.size
+        response[:object] = lines.map { |line| { username: @reader.speaker(line), text: @reader.text_spoken(line), time: @reader.time_spoken(line), target_name: @reader.target_name(line) } } 
       else
         return [404, {'Content-Type' => 'application/json'}, [{error: 'Page not found'}.to_json,"\n"]]
       end
