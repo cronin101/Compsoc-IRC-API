@@ -27,10 +27,6 @@ class LogLineInterpretter
   def time_spoken(spoken_line)
     spoken_line.split(/ <./).first
   end
-
-  def details(spoken_line)
-    puts "\"#{text_spoken(spoken_line)}\" - #{speaker(spoken_line)}"
-  end
 end
 
 class LogExplorer
@@ -82,16 +78,4 @@ class LogExplorer
     @log_lines.reverse.each { |l| return l if (l =~ anyone_speaking_regex) }
     raise "No people spoke in entire log"
   end
-end
-
-if __FILE__ == $0
-  start = Time.now
-  compsoc_logs = LogExplorer.new(COMPSOC_LOG_PATH)
-  reader = LogLineInterpretter.new
-  reader.details(compsoc_logs.first_line_spoken)
-  reader.details(compsoc_logs.last_line_spoken)
-  reader.details(compsoc_logs.first_line_spoken_by('wenqi'))
-  reader.details(compsoc_logs.last_line_spoken_by('wenqi'))
-  reader.details(compsoc_logs.random_spoken_line)
-  puts "Log processing took: #{Time.now - start} on #{`uname -p`.chomp}"
 end
