@@ -19,6 +19,7 @@ All requests will return __JSON__ with a description of the object (and its size
     GET /all_lines/by/batman/matching/WHERE
 ##### Response
 The object returned when expecting a many-line response is an array of IRC lines (sometimes an array with one element).
+
     {
       "description": "all lines spoken on #compsoc by batman",
       "filter": "WHERE",
