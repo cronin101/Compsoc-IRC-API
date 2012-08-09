@@ -72,10 +72,11 @@ class LogExplorer
 
   def first_line_spoken
     @log_lines.each { |l| return l if (l =~ anyone_speaking_regex) }
+    return nil
   end
 
   def last_line_spoken
     @log_lines.reverse.each { |l| return l if (l =~ anyone_speaking_regex) }
-    raise "No people spoke in entire log"
+    return nil
   end
 end
