@@ -46,13 +46,13 @@ The object returned when expecting a many-line response is an array of IRC lines
 ##### Request
     GET /first_line/by/alfred
 ##### Response    
-{
-  "description": "first line spoken on #compsoc by alfred",
-  "size": 1,
-  "object": {
-    "username": "alfred",
-    "text": "Evening, Master Wayne.",
-    "time": "18:52",
-    "target_name": "batman"
-  }
-}
+    {
+      "description": "first line spoken on #compsoc by alfred",
+      "size": 1,
+      "object": {
+        "username": "alfred",
+        "text": "Evening, Master Wayne.",
+        "time": "18:52",
+        "target_name": "batman"
+      }
+    }
