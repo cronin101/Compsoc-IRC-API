@@ -34,6 +34,33 @@ The object returned when expecting a many-line response is an array of IRC lines
       ]
     }    
 
+##### Request
+    GET /all_lines/by/dog
+##### Response
+    {
+      "description": "all lines spoken on #compsoc by dog",
+      "size": 3,
+      "object": [
+        {
+          "username": "dog",
+          "text": "HELLO?",
+          "time": "23:52",
+          "target_name": null
+        },
+        {
+          "username": "dog",
+          "text": "HELLO??!!?",
+          "time": "23:52",
+          "target_name": null
+        },
+        {
+          "username": "dog",
+          "text": "YES THIS IS DOG",
+          "time": "23:52",
+          "target_name": null
+        }
+      ]
+    }
 ### Returning just one line
 `GET /first_line` will return the first line ever spoken (since the logging was actually turned on)!
 
