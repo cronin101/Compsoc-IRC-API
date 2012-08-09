@@ -67,6 +67,10 @@ The object returned when expecting a many-line response is an array of IRC lines
       ]
     }
 ### Returning just one line
+All one-line queries will short circuit on a match and are therefore generally faster than multi-line queries.
+
+    TODO: Complete short circuiting versions of all of the multi-line features
+
 `GET /first_line` will return the first line ever spoken (since the logging was actually turned on)!
 
 `GET /first_line/by/foo` will return the first line that __foo__ spoke since logging began.
