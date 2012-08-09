@@ -24,13 +24,13 @@ end
 
 get '/all_lines/matching/:filter' do
   content_type :json
-  matching_lines = logfile.spoken_lines.find_all { |l| l =~ /#{CGI.unescape(params[:filter])}/ }
+  matching_lines = logfile.spoken_lines.find_all { |l| reader.text_spoken(l) =~ /#{CGI.unescape(params[:filter])}/ }
   lines_response("all lines spoken on #compsoc", matching_lines, params[:filter])
 end
 
 get '/all_lines/by/:name/matching/:filter' do
   content_type :json
-  matching_lines = logfile.lines_spoken_by(CGI.unescape(params[:name])).find_all { |l| l =~ /#{CGI.unescape(params[:filter])}/ }
+  matching_lines = logfile.lines_spoken_by(CGI.unescape(params[:name])).find_all { |l| reader.text_spoken(l) =~ /#{CGI.unescape(params[:filter])}/ }
   lines_response("all lines spoken on #compsoc by #{params[:name]}", matching_lines, params[:filter])
 end
 
