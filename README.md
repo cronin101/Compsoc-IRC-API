@@ -10,7 +10,7 @@ Simply set `COMSPOC_LOG_PATH` in LogExplorer to be the path to the logfile (test
 
 Make sure the server is executable `$ chmod +x ./compsoc_irc_api.rb`.
 
-To run the server on port 8080, `./compsoc_irc_api.rb -p 8080`
+To run the server on port 8080, `$ ./compsoc_irc_api.rb -p 8080`
 
 ## Paths
 ### Returning many lines
