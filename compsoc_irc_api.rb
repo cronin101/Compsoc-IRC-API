@@ -5,9 +5,6 @@ require 'json'
 require './log_explorer.rb'
 require 'cgi'
 
-@logfile
-@reader
-
 before do
   logfile.reload
 end
@@ -95,11 +92,11 @@ end
 private
 
 def logfile
-  @logfile ||= LogExplorer.new(COMPSOC_LOG_PATH)
+  @@logfile ||= LogExplorer.new(COMPSOC_LOG_PATH)
 end
 
 def reader
-  @reader ||= LogLineInterpretter.new
+  @@reader ||= LogLineInterpretter.new
 end
 
 def line_response(description, line)
